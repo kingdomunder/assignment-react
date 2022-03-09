@@ -1,15 +1,15 @@
-import { SERVER_URL } from "../../../constants"
+import { authCheck } from "../../../api/AuthQuery"
 
 function MainContents() {
-  const test = () => {
-    console.log(SERVER_URL)
-    // console.log(process.env.REACT_APP_TEST)
+
+  const handleCheck = () => {
+    authCheck()
   }
 
   return (
     <div>
         <h3>메인페이지 컨텐츠</h3>
-        <button onClick={test}>test</button>
+        <button onClick={handleCheck}>token check</button>
     </div>
   )
 }

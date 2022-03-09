@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router';
-import { login } from '../../api/AuthQuery'
+import { authLogin } from '../../api/AuthQuery'
 
 function LoginContainer() {
 
@@ -10,19 +10,31 @@ function LoginContainer() {
   const [password, setPassword] = useState("")
 
   const handleLogin = () => {
-    login(navigate, {
-      email,
-      password
-    })
+    if (password.length >= 8 && password.length <= 10) {
+      authLogin(navigate, {
+        email,
+        password
+      })
+    } else {
+      alert("입력정보를 확인해주세요")
+    }
   }
 
   return (
     <div> 
-        <label>이메일</label>
-        <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
-        <label>비밀번호</label>
-        <input type="text" value={password} onChange={e => setPassword(e.target.value)} />
-        <button onClick={handleLogin}>로그인</button>
+        <div>
+          <label>EMAIL</label>
+          <input type="text" 
+                 value={email} 
+                 onChange={e => setEmail(e.target.value)} />
+          <br />
+          <label>PASSWORD</label>
+          <input type="password" 
+                 value={password} 
+                 placeholder="8자 이상 10자 이하"
+                 onChange={e => setPassword(e.target.value)} />
+        </div>
+        <button onClick={handleLogin}>LOGIN</button>
     </div>
   )
 }

@@ -1,26 +1,67 @@
-import useState from 'react'
-import { login } from '../../api/Auth_query'
+import { useState } from 'react'
+import { useNavigate } from 'react-router';
+import { authSignup } from '../../api/AuthCommand';
 
-function LoginContainer() {
+function SignupContainer() {
 
+  const navigate = useNavigate()
+
+  const [city, setCity] = useState("")
   const [email, setEmail] = useState("")
+  const [name, setName] = useState("")
   const [password, setPassword] = useState("")
+  const [street, setStreet] = useState("")
+  const [zipcode, setZipcode] = useState("")
 
-  const handleLogin = () => {
-    console.log(email, password)
-    alert(email + "===" + password)
-    login(email, password)
+  const handleSignup = () => {
+    const data = {
+      city,
+      email,
+      name,
+      password,
+      street,
+      zipcode
+    }
+    authSignup(navigate, data)
   }
 
   return (
     <div> 
-        <label>이메일</label>
-        <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
-        <label>비밀번호</label>
-        <input type="text" value={password} onChange={e => setPassword(e.target.value)} />
-        <button onClick={handleLogin}>로그인</button>
+        <div>
+          <label>CITY</label>
+          <input type="text" 
+                 value={city} 
+                 onChange={e => setCity(e.target.value)} />
+          <br />
+          <label>EMAIL</label>
+          <input type="text" 
+                 value={email} 
+                 onChange={e => setEmail(e.target.value)} />
+          <br />
+          <label>NAME</label>
+          <input type="text" 
+                 value={name} 
+                 onChange={e => setName(e.target.value)} />
+          <br />
+          <label>PASSWORD</label>
+          <input type="password" 
+                 value={password} 
+                 placeholder="8자 이상 10자 이하"
+                 onChange={e => setPassword(e.target.value)} />
+          <br />
+          <label>STREET</label>
+          <input type="text" 
+                 value={street} 
+                 onChange={e => setStreet(e.target.value)} />
+          <br />
+          <label>ZIPCODE</label>
+          <input type="text" 
+                 value={zipcode} 
+                 onChange={e => setZipcode(e.target.value)} />
+        </div>
+        <button onClick={handleSignup}>SIGNUP</button>
     </div>
   )
 }
 
-export default LoginContainer
+export default SignupContainer

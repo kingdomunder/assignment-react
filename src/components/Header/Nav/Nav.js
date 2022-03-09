@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router';
-import { PATH_NAME } from '../../../constants';
+import { ROUTE_PATH } from '../../../constants';
 
 function Nav() {
 
@@ -7,10 +7,12 @@ function Nav() {
     
     return (
         <div>
-            <a onClick={() => navigate(PATH_NAME.main)}>Main</a> <br />
-            <a onClick={() => navigate(PATH_NAME.login)}>Login</a> <br />
-            <a>Board</a> <br />
+            <a onClick={() => navigate(ROUTE_PATH.main)}>Main</a> <br />
+            <a onClick={() => navigate(ROUTE_PATH.login)}>Login</a> <br />
+            <a onClick={() => navigate(ROUTE_PATH.signup)}>Signup</a> <br />
+            <a onClick={() => navigate(ROUTE_PATH.boardAll)}>Board</a> <br />
             <a>Member</a> <br />
+            <hr />
         </div>
 
     )
