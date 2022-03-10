@@ -1,0 +1,3 @@
+export const ACCESS_TOKEN = "accessToken";
+
+export const SERVER_URL = process.env.REACT_APP_SERVER_URL
