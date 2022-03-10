@@ -1,8 +1,8 @@
-import { TOKEN, ROUTE_PATH, API_PATH } from "../constants";
+import { ACCESS_TOKEN, ROUTE_PATH, API_PATH, DATA } from "../constants";
 import API from "./API";
 
 export const authCheck = () => {
-    const token = localStorage.getItem(TOKEN);
+    const token = localStorage.getItem(ACCESS_TOKEN);
     if(token) {
         API.post(API_PATH.check, token)
         .then(res => {
@@ -19,18 +19,19 @@ export const authCheck = () => {
 export const authLogin = (navigate, loginData) => {
     API.post(API_PATH.login, loginData)
     .then(res => {
-        const userData = res.data //로그인 성공하면 백에서 토큰 발급받는다고 가정 
-        
-        console.log(userData.status)
-        userData.token = 'tokenString' 
+        const result = res.data
 
-        localStorage.setItem(TOKEN, userData.token) 
-        userData.token
-        ? navigate(ROUTE_PATH.main) 
-        : alert("로그인 정보를 확인해주세요") && window.location.reload()
+        // 가입된 이메일이 없으면 null반환, 비밀번호가 틀리면 message반환
+        if (result.data === null || result.data === DATA.pasErrorData) {
+            alert("로그인 정보를 확인해주세요")
+            window.location.reload()
+        }
+        else {
+            localStorage.setItem(ACCESS_TOKEN, result.data.accessToken)
+            navigate(ROUTE_PATH.main)
+        }
     })
     .catch(err => {
-        console.log(err.message)
-        window.location.reload()
+        alert(err.message)
     })
 }

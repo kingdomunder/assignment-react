@@ -1,0 +1,1 @@
+export const FETCH_BOARD_ONE_DATA = 'FETCH_BOARD_ONE_DATA'
