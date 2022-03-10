@@ -8,6 +8,7 @@ export const getBoardAll = async () => {
     })
     .then(res => {
         result = res.data.data
+        console.log(result)
         localStorage.setItem(BOARD_ALL, JSON.stringify(result.list)) //임시로 로컬스토리지에 저장
     })
     .catch(err => {
@@ -22,6 +23,7 @@ export const getBoardOne = async (seq) => {
     let result = false
     await API.get(API_PATH.boardOneView + seq)
     .then(res => {
+        console.log(res.data)
         localStorage.setItem(BOARD_ONE, JSON.stringify(res.data.data))
         result = true
     })

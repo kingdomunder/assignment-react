@@ -1,6 +1,9 @@
+//localStorage key값 은닉 
 export const ACCESS_TOKEN = "Token";
-export const BOARD_ALL = "BoardAll"
-export const BOARD_ONE = "BoardOne"
+export const BOARD_ALL = "BoardAll";
+export const BOARD_ONE = "BoardOne";
+export const ADMIN_AUTH = "ROLE_ADMIN";
+export const IS_LOGIN = "IsLogin"
 
 export const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -29,7 +32,10 @@ export const API_PATH = {
     "replyModify" : "api/board/reply",
     "replyDelete" : "api/board/reply/",
     "memberOneView" : "api/member/",
-    "memberAllView" : "api/member/all"
+    "memberAllView" : "api/member/all",
+    "adminModifyMember" : "api/member/",
+    "adminAuthMember" : "api/member/auth",
+    "adminDeleteMember" : "api/member/"
 }
 
 export const DEFAULT = {
@@ -45,11 +51,4 @@ export const DEFAULT = {
 
 export const DATA = {
     "pasErrorData" : "자격 증명에 실패하였습니다." 
-}
-
-export const STATUS = {
-    "boardWriting" : false,
-    "boardModifying" : false,
-    "replyWriting" : false,
-    "replyModifying" : false
 }

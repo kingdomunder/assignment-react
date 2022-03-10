@@ -1,0 +1,21 @@
+.boardTitleContainer {
+	text-align: left;
+	border-style: groove;
+	width: 50%;
+	margin-left: 25%;
+}
+
+.boardContentContainer {
+	text-align: left;
+	border-style: groove;
+	width: 50%;
+	margin-left: 25%;
+	height: 400px;
+}
+
+.replyContainer {
+	text-align: left;
+	border-style: groove;
+	width: 50%;
+	margin-left: 25%;
+}

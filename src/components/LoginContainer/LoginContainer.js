@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router';
 import { authLogin } from '../../api/AuthQuery'
+import { getMemberOne } from '../../api/MemberQuery';
+import { ADMIN_AUTH } from '../../constants';
 
 function LoginContainer() {
 
@@ -9,15 +11,25 @@ function LoginContainer() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleLogin = () => {
+  const handleLogin = async() => {
     if (password.length >= 8 && password.length <= 10) {
-      authLogin(navigate, {
+      const data = {
         email,
         password
-      })
+      }
+      const result = await authLogin(navigate, data)
+      if (result) {
+        const memberData = await getMemberOne(email) 
+        console.log(memberData)
+        const auth = memberData.authority
+        if (auth === ADMIN_AUTH) {
+          localStorage.setItem(ADMIN_AUTH, auth)
+        }
+      }
     } else {
-      alert("입력정보를 확인해주세요")
+      alert("입력정보를 확인해주세요") //비밀번호 길이 다름 (api호출 전 검사)
     }
+    window.location.reload()
   }
 
   return (

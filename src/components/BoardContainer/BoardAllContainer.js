@@ -1,53 +1,52 @@
-import { useNavigate } from 'react-router';
-import { useEffect, useState } from "react"
-import { ROUTE_PATH } from '../../constants';
-import { getBoardAll, getBoardOne } from "../../api/BoardQuery"
+import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { ROUTE_PATH } from "../../constants";
+import { getBoardAll, getBoardOne } from "../../api/BoardQuery";
+import styles from "./BoardAllContainer.module.css"
 
 function BoardAllContainer() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
+  const [boardData, setBoardData] = useState("");
 
-    const [boardData, setBoardData] = useState("")
-
-    const handleBoardOne = async(seq) => {
-      const result = await getBoardOne(seq)
-      if (result) {
-        navigate(ROUTE_PATH.boardOneView)
-      }
+  const handleBoardOne = async (seq) => {
+    const result = await getBoardOne(seq);
+    if (result) {
+      navigate(ROUTE_PATH.boardOneView);
     }
+  };
 
-    useEffect(async() => {
-      const data = await getBoardAll()
-      setBoardData(data)
-    },[])
-    
+  useEffect(async () => {
+    const data = await getBoardAll();
+    setBoardData(data);
+  }, []);
+
   return (
-    <div> 
+    <div className={styles.boardAllContainer}>
+	<button onClick={() => navigate(ROUTE_PATH.boardWrite)}>Write</button>
       <table>
-        {boardData.length != 0 && 
+        {boardData.length != 0 && (
           <div>
             <tr>
               <th>SEQ</th>
               <th>TITLE</th>
               <th>EMAIL</th>
               <th>VIEW</th>
-            </tr>  
-            {boardData.list.map(board =>
+            </tr>
+			<hr />
+            {boardData.list.map(board => (
               <tr onClick={() => handleBoardOne(board.seq)}>
                 <td>{board.seq}</td>
                 <td>{board.title}</td>
                 <td>{board.memberEmail}</td>
                 <td>{board.viewCount}</td>
-              </tr>  
-            )}
+              </tr>
+            ))}
           </div>
-        }
-      </table> 
-      <hr />
-      <button
-          onClick={() => navigate(ROUTE_PATH.boardWrite)}>Write</button>       
+        )}
+      </table>
     </div>
-  )
+  );
 }
 
-export default BoardAllContainer
+export default BoardAllContainer;

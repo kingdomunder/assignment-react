@@ -1,12 +1,13 @@
 import { API_PATH, DEFAULT } from "../constants";
 import API from "./API";
 
-export const getMemberAll = async(navigate) => {
+export const getMemberAll = async() => {
     let result = false
-    await API.get(API_PATH.memberAll, {
-        params: DEFAULT.memberAllView,
+    await API.get(API_PATH.memberAllView, {
+        params: DEFAULT.searchMemberAll,
     })
     .then(res => {
+        console.log(res.data.data.list)
         result = res.data.data.list
     })
     .catch(err => {
@@ -17,7 +18,7 @@ export const getMemberAll = async(navigate) => {
     }
 }
 
-export const getMemberOne = async(navigate, email) => {
+export const getMemberOne = async(email) => {
     let result = false
     await API.get(API_PATH.memberOneView, {
         params: {

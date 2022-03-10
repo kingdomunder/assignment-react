@@ -17,7 +17,7 @@ function BoardWriteContainer() {
       }
       const result = await boardWrite(data)
       if (result) {
-        //   handleBack()
+        handleBack()
       }
   }
 
@@ -35,17 +35,17 @@ function BoardWriteContainer() {
   return (
     <div> 
       <div>TITLE</div>
-      <input type="text" 
-             value={title} 
-             onChange={e => setTitle(e.target.value)} />
+      <textarea style={{resize: "none"}}
+                cols="99"
+                value={title}
+                onChange={e => setTitle(e.target.value)} />
       <hr />
       <div>CONTENT</div>
       <textarea style={{resize: "none"}}
-                rows="1"
+                rows="30"
                 cols="99"
-                maxlength="50"
-                spellcheck="false"
-                autofocus
+                maxLength="50"
+                spellCheck="false"
                 required
                 value={content} 
                 onChange={e => setContent(e.target.value)} />

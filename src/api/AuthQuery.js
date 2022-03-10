@@ -1,12 +1,12 @@
-import { ACCESS_TOKEN, ROUTE_PATH, API_PATH, DATA } from "../constants";
+import { ACCESS_TOKEN, ADMIN_AUTH, IS_LOGIN, API_PATH, DATA } from "../constants";
 import API from "./API";
 
-export const authCheck = () => {
+export const authCheck = async() => {
     const token = localStorage.getItem(ACCESS_TOKEN);
     if(token) {
-        API.post(API_PATH.check, token)
+        await API.post(API_PATH.check, token)
         .then(res => {
-            console.log(res.data.status)
+            console.log(res.data)
         })
         .catch(err => {
             alert(console.log(err.message))
@@ -16,22 +16,24 @@ export const authCheck = () => {
     }
 }
 
-export const authLogin = (navigate, loginData) => {
-    API.post(API_PATH.login, loginData)
+export const authLogin = async(navigate, loginData) => {
+    let result = false
+    await API.post(API_PATH.login, loginData)
     .then(res => {
-        const result = res.data
 
         // 가입된 이메일이 없으면 null반환, 비밀번호가 틀리면 message반환
-        if (result.data === null || result.data === DATA.pasErrorData) {
+        if (res.data.data === null || res.data.data === DATA.pasErrorData) {
             alert("로그인 정보를 확인해주세요")
             window.location.reload()
         }
         else {
-            localStorage.setItem(ACCESS_TOKEN, result.data.accessToken)
-            navigate(ROUTE_PATH.main)
+            localStorage.setItem(ACCESS_TOKEN, res.data.data.accessToken)
+            localStorage.setItem(IS_LOGIN, true)
+            result = true         
         }
     })
     .catch(err => {
         alert(err.message)
     })
+    return result
 }

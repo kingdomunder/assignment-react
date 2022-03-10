@@ -12,7 +12,6 @@ import BoardOnePage from './pages/BoardPage/BoardOnePage/BoardOnePage';
 import BoardWritePage from './pages/BoardPage/BoardOnePage/BoardWritePage';
 import BoardModifyPage from './pages/BoardPage/BoardOnePage/BoardModifyPage';
 import MemberPage from './pages/MemberPage/MemberPage';
-import AdminPage from './pages/MemberPage/AdminPage/AdminPage';
 
 function App() {
 
@@ -28,7 +27,6 @@ function App() {
         <Route exact path={ ROUTE_PATH.boardWrite} element={<BoardWritePage />}/>
         <Route exact path={ ROUTE_PATH.BoardModify} element={<BoardModifyPage />}/>
         <Route exact path={ ROUTE_PATH.member} element={<MemberPage />}/>
-        <Route exact path={ ROUTE_PATH.admin} element={<AdminPage />}/>
       </Routes>
     </div>
   );

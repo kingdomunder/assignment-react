@@ -39,3 +39,42 @@ export const boardDelete = async(id) => {
     })
     return result
 }
+
+export const replyWrite = async(replyData) => {
+    let result = false
+    await API.post(API_PATH.replyWrite, replyData)
+    .then(res => {
+        console.log(res.data)
+        result = true
+    })
+    .catch(err => {
+        console.log(err.message)
+    })
+    return result
+}
+
+export const replyModify = async(replyData) => {
+    let result = false
+    await API.put(API_PATH.replyWrite, replyData)
+    .then(res => {
+        console.log(res.data)
+        result = true
+    })
+    .catch(err => {
+        console.log(err.message)
+    })
+    return result
+}
+
+export const replyDelete = async(id) => {
+    let result = false
+    await API.delete(API_PATH.replyWrite + id)
+    .then(res => {
+        console.log(res.data)
+        result = true
+    })
+    .catch(err => {
+        console.log(err.message)
+    })
+    return result
+}
