@@ -55,7 +55,7 @@ export const replyWrite = async(replyData) => {
 
 export const replyModify = async(replyData) => {
     let result = false
-    await API.put(API_PATH.replyWrite, replyData)
+    await API.put(API_PATH.replyModify, replyData)
     .then(res => {
         console.log(res.data)
         result = true
@@ -67,8 +67,9 @@ export const replyModify = async(replyData) => {
 }
 
 export const replyDelete = async(id) => {
+    console.log(id)
     let result = false
-    await API.delete(API_PATH.replyWrite + id)
+    await API.delete(API_PATH.replyDelete + "/" + id)
     .then(res => {
         console.log(res.data)
         result = true

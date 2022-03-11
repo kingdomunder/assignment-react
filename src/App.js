@@ -15,21 +15,21 @@ import MemberPage from './pages/MemberPage/MemberPage';
 
 function App() {
 
-  return (
-    <div className="App">
-      <Header />
-      <Routes>
-        <Route exact path={ ROUTE_PATH.main } element={<MainPage />}/>
-        <Route exact path={ ROUTE_PATH.login } element={<LoginPage />} />
-        <Route exact path={ ROUTE_PATH.signup } element={<SignupPage />} />
-        <Route exact path={ ROUTE_PATH.boardAllView} element={<BoardAllPage />}/>
-        <Route exact path={ ROUTE_PATH.boardOneView} element={<BoardOnePage />}/>
-        <Route exact path={ ROUTE_PATH.boardWrite} element={<BoardWritePage />}/>
-        <Route exact path={ ROUTE_PATH.BoardModify} element={<BoardModifyPage />}/>
-        <Route exact path={ ROUTE_PATH.member} element={<MemberPage />}/>
-      </Routes>
-    </div>
-  );
+	return (
+		<div className="App">
+			<Header />
+			<Routes>
+				<Route exact path={ROUTE_PATH.main} element={<MainPage />} />
+				<Route exact path={ROUTE_PATH.login} element={<LoginPage />} />
+				<Route exact path={ROUTE_PATH.signup} element={<SignupPage />} />
+				<Route exact path={ROUTE_PATH.boardAllView} element={<BoardAllPage />} />
+				<Route exact path={ROUTE_PATH.boardOneView + ":boardSeq"} element={<BoardOnePage />} />
+				<Route exact path={ROUTE_PATH.boardWrite} element={<BoardWritePage />} />
+				<Route exact path={ROUTE_PATH.BoardModify + "boardSeq"} element={<BoardModifyPage />} />
+				<Route exact path={ROUTE_PATH.member} element={<MemberPage />} />
+			</Routes>
+		</div>
+	);
 }
 
 export default App;

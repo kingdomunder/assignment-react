@@ -54,7 +54,8 @@ function BoardModifyContainer() {
                 	  onChange={e => setTitle(e.target.value)} />
 			<hr />
 			<div>CONTENT</div>
-			<textarea style={{ resize: "none" }}
+			<textarea 
+				style={{ resize: "none" }}
                 rows="30"
                 cols="99"
                 maxLength="50"

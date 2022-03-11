@@ -1,15 +1,18 @@
 import API from "./API";
 import { BOARD_ALL, BOARD_ONE, API_PATH, DEFAULT } from "../constants";
 
-export const getBoardAll = async () => {
+export const getBoardAll = async(page) => {
     let result = false
     await API.get(API_PATH.boardAllView, {
-        params: DEFAULT.boardAllView
+        params: {
+            "size" : DEFAULT.boardSize,
+            page
+        }
     })
     .then(res => {
         result = res.data.data
         console.log(result)
-        localStorage.setItem(BOARD_ALL, JSON.stringify(result.list)) //임시로 로컬스토리지에 저장
+        localStorage.setItem(BOARD_ALL, JSON.stringify(result)) //임시로 로컬스토리지에 저장
     })
     .catch(err => {
         console.log(err.message)

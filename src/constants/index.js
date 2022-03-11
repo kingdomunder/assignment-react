@@ -3,6 +3,7 @@ export const ACCESS_TOKEN = "Token";
 export const BOARD_ALL = "BoardAll";
 export const BOARD_ONE = "BoardOne";
 export const ADMIN_AUTH = "ROLE_ADMIN";
+export const USER_AUTH = "ROLE_USER";
 export const IS_LOGIN = "IsLogin";
 export const NEED_LOGIN = "NeedLogin";
 
@@ -15,7 +16,7 @@ export const ROUTE_PATH = {
     "boardAllView" : "/board/view/all",
     "boardOneView" : "/board/view/",
     "boardWrite" : "/board/write",
-    "BoardModify" : "/board/modify",
+    "BoardModify" : "/board/modify/",
     "member" : "/member/search",
     "admin" : "/member/admin"
 };
@@ -31,7 +32,7 @@ export const API_PATH = {
     "boardDelete" : "api/board/",
     "replyWrite" : "api/board/reply",
     "replyModify" : "api/board/reply",
-    "replyDelete" : "api/board/reply/",
+    "replyDelete" : "api/board/reply",
     "memberOneView" : "api/member/",
     "memberAllView" : "api/member/all",
     "adminModifyMember" : "api/member/",
@@ -40,10 +41,7 @@ export const API_PATH = {
 };
 
 export const DEFAULT = {
-    "boardAllView" : {
-        "page" : "0",
-        "size" : "100"  
-    },
+    "boardSize" : "10",
     "searchMemberAll" : {
         "page" : "0",
         "size" : "10"

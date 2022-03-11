@@ -1,88 +1,96 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { BOARD_ONE, ROUTE_PATH } from "../../../constants"
+import { ADMIN_AUTH, BOARD_ONE, ROUTE_PATH, USER_AUTH } from "../../../constants"
 import { boardDelete, replyWrite, replyModify, replyDelete } from "../../../api/BoardCommand"
 import { getBoardOne } from "../../../api/BoardQuery"
 import ReplyContainer from "./ReplyContainer/ReplyContainer"
 import styles from "./BoardOneContainer.module.css"
 
-function BoardOneContainer() {
+function BoardOneContainer({ boardSeq }) {
 
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
-	const [boardOne, setBoardOne] = useState("")
-	const [replyContent, setReplyContent] = useState("")
-	const [replyModifyContent, setReplyModifyContent] = useState("")
-	const [isReplyModifying, setIsReplyModifying] = useState(false)
-	const [modifyingReply, setModifyingReply] = useState("")
+	const [boardOne, setBoardOne] = useState("");
+	const [replyContent, setReplyContent] = useState("");
+	const [replyModifyContent, setReplyModifyContent] = useState("");
+	const [isReplyModifying, setIsReplyModifying] = useState(false);
+	const [isWriter, setIsWriter] = useState(false);
+	const [userEmail, setUserEmail] = useState("");
+	const [modifyingReply, setModifyingReply] = useState("");
 
-	const handleDelete = async() => {
+	const handleBoardDelete = async() => {
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			const result = await boardDelete(boardOne.seq)
+			const result = await boardDelete(boardOne.seq);
 			if (result) {
-				alert("삭제 성공")
-				navigate(ROUTE_PATH.boardAllView)
-			}
-		}
-	}
+				alert("삭제 성공");
+				navigate(ROUTE_PATH.boardAllView);
+			};
+		};
+	};
 
 	const handleReplyWrite = async() => {
 		const replyData = {
 			"boardSeq" : boardOne.seq,
 			"content" : replyContent
-		}
-		const result = await replyWrite(replyData)
+		};
+		const result = await replyWrite(replyData);
 		if (result) {
-			handleReload()
-		}
-	}
+			handleReload();
+		};
+	};
 
 	const handleReplyModify = (reply) => {
 		if (reply) {
-			setReplyModifyContent(reply.content)
-			setIsReplyModifying(true)
-			setModifyingReply(reply.seq)
+			setReplyModifyContent(reply.content);
+			setIsReplyModifying(true);
+			setModifyingReply(reply.seq);
 		} else {
-			setIsReplyModifying(false)
-			setModifyingReply("")
-		}
-	}
+			setIsReplyModifying(false);
+			setModifyingReply("");
+		};
+	};
 
 	const handleReplyModifyConfirm = async() => {
 		const data = {
 			"content" : replyModifyContent,
 			"seq" : modifyingReply
 		}
-		const result = await replyModify(data)
+		const result = await replyModify(data);
 		if (result) {
-			handleReload()
-		}
-	}
+			handleReload();
+		};
+	};
 
     const handleReplyDelete = async (seq) => {
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			const result = await replyDelete(seq)
+			const result = await replyDelete(seq);
 			if (result) {
-				// handleReload()
-			}
-		}
-    }
+				handleReload();
+			};
+		};
+    };
 
 	const handleReload = async() => {
-		await getBoardOne(boardOne.seq)
-		window.location.reload()
-	}
+		await getBoardOne(boardOne.seq);
+		window.location.reload();
+	};
 
-	useEffect(async () => {
-		const data = await JSON.parse(localStorage.getItem(BOARD_ONE))
-		setBoardOne(data)
-	}, [])
+	useEffect(async() => {
+		const boardOneData = await JSON.parse(localStorage.getItem(BOARD_ONE));
+		const userEmailData = localStorage.getItem(USER_AUTH);
+		setBoardOne(boardOneData);
+		setUserEmail(userEmailData);
+		if (boardOneData.memberEmail === userEmail) {
+			setIsWriter(true);
+		};
+	}, []);
 
 	return (
 		<div>
 			<div>
 				<div>작성일 : {boardOne.createData}</div>
 				<div>글번호 : {boardOne.seq}</div>
+				<div>작성자 : {boardOne.memberEmail}</div>
 				<hr />
 
 				<div>TITLE</div>
@@ -92,9 +100,12 @@ function BoardOneContainer() {
 				<div>CONTENTS</div>
 				<div className={styles.boardContentContainer}>{boardOne.content}</div>
 				<hr />
-
-				<button onClick={() => navigate(ROUTE_PATH.BoardModify)}>Modify</button>
-				<button onClick={handleDelete}>Delete</button>
+				{isWriter &&
+					<div>
+						<button onClick={() => navigate(ROUTE_PATH.BoardModify + boardOne.seq)}>Modify</button>
+						<button onClick={handleBoardDelete}>Delete</button>
+					</div>
+				}
 				<br />
 				<br />
 				<button onClick={() => navigate(ROUTE_PATH.boardAllView)}>BACK</button>
@@ -103,7 +114,6 @@ function BoardOneContainer() {
 				<div><h3>댓글</h3></div>
 				{boardOne.replies && 
 					boardOne.replies.map(reply => (	
-
 						<div className={styles.replyContainer}>
 							{isReplyModifying && modifyingReply === reply.seq ?
 								<div>
@@ -112,8 +122,8 @@ function BoardOneContainer() {
 										onChange={e => setReplyModifyContent(e.target.value)}
 										rows="5" 
 										cols="100" 
-										maxlength="500" 
-										spellcheck="false" 
+										maxLength="500" 
+										spellCheck="false" 
 										value={replyModifyContent} />
 										<button onClick={() => handleReplyModifyConfirm(reply.seq)}>Confirm</button>
 										<button onClick={() => handleReplyModify(false)}>취소</button>
@@ -121,8 +131,13 @@ function BoardOneContainer() {
 								:
 								<div>
 									<ReplyContainer reply={reply} /> 
-									<button onClick={() => handleReplyModify(reply)}>수정</button>
-									<button onClick={() => handleReplyDelete(reply.seq)}>삭제</button>
+									{((userEmail === reply.memberEmail) || (localStorage.getItem(ADMIN_AUTH) === ADMIN_AUTH)) &&
+									!reply.deleted &&
+										<div>
+											<button onClick={() => handleReplyModify(reply)}>수정</button>
+											<button onClick={() => handleReplyDelete(reply.seq)}>삭제</button>
+										</div>
+									}
 								</div>
 							}
 						</div>
@@ -134,8 +149,8 @@ function BoardOneContainer() {
 						onChange={e => setReplyContent(e.target.value)}
 						rows="5" 
 						cols="100" 
-						maxlength="500" 
-						spellcheck="false" 
+						maxLength="500" 
+						spellCheck="false" 
 						value={replyContent} />
 					<button onClick={handleReplyWrite}>댓글달기</button>
 				</div>

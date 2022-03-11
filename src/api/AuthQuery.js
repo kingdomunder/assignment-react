@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, ADMIN_AUTH, IS_LOGIN, API_PATH, DATA } from "../constants";
+import { ACCESS_TOKEN, IS_LOGIN, API_PATH, DATA } from "../constants";
 import API from "./API";
 
 export const authCheck = async() => {
