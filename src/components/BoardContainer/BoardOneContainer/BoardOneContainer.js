@@ -22,8 +22,6 @@ function BoardOneContainer() {
 			if (result) {
 				alert("삭제 성공")
 				navigate(ROUTE_PATH.boardAllView)
-			} else {
-				alert("삭제 실패. 잠시 후에 다시 시도해주세요")
 			}
 		}
 	}
@@ -36,8 +34,6 @@ function BoardOneContainer() {
 		const result = await replyWrite(replyData)
 		if (result) {
 			handleReload()
-		} else {
-			alert("댓글등록 실패.")
 		}
 	}
 
@@ -60,8 +56,6 @@ function BoardOneContainer() {
 		const result = await replyModify(data)
 		if (result) {
 			handleReload()
-		} else {
-			alert("댓글수정 실패.")
 		}
 	}
 

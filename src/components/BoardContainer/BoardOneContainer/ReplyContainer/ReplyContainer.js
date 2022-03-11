@@ -14,15 +14,16 @@ function ReplyContainer(reply) {
 		<div>
             <table>
                 <tr>
-                    <td>작성자 : {replyData.memberEmail}</td>
-                    <td>마지막 작성일 : {replyData.updateData}</td>
-                    <td>글번호 : {replyData.seq}</td>
+                    <td>작성자 : {replyData.memberEmail} &nbsp;</td>
+                    <td>마지막 작성일 : {replyData.updateDate} &nbsp;</td>
+                    <td>글번호 : {replyData.seq} &nbsp;</td>
                 </tr>
+                <hr />
                 <tr>
                 <td>
                     <div><p>{replyData.content}</p></div>
                 </td>
-            </tr>
+                </tr>
             </table>
 		</div>
     )

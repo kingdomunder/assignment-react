@@ -6,13 +6,13 @@ export const authCheck = async() => {
     if(token) {
         await API.post(API_PATH.check, token)
         .then(res => {
-            console.log(res.data)
+            console.log(res.data);
         })
         .catch(err => {
-            alert(console.log(err.message))
+            alert(console.log(err.message));
         })
     } else {
-        alert("인증 만료") 
+        alert("인증 만료");
     }
 }
 
@@ -27,6 +27,7 @@ export const authLogin = async(navigate, loginData) => {
             window.location.reload()
         }
         else {
+            console.log(res.data);
             localStorage.setItem(ACCESS_TOKEN, res.data.data.accessToken)
             localStorage.setItem(IS_LOGIN, true)
             result = true         

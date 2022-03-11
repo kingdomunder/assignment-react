@@ -5,12 +5,11 @@ import { getBoardOne } from '../../../api/BoardQuery'
 import { boardModify } from '../../../api/BoardCommand'
 
 function BoardModifyContainer() {
+	const navigate = useNavigate();
 
-	const navigate = useNavigate()
-
-	const [seq, setSeq] = useState("")
-	const [title, setTitle] = useState("")
-	const [content, setContent] = useState("")
+	const [seq, setSeq] = useState("");
+	const [title, setTitle] = useState("");
+	const [content, setContent] = useState("");
 
 	const handleBoardModify = async () => {
 		const data = {
@@ -26,25 +25,25 @@ function BoardModifyContainer() {
 		} else {
 			alert("수정 실패")
 		}
-	}
+	};
 
 	const handleBack = () => {
 		handleClear()
 		navigate(ROUTE_PATH.boardOneView)
-	}
+	};
 
 	const handleClear = () => {
 		setSeq("")
 		setTitle("")
 		setContent("")
-	}
+	};
 
 	useEffect(async () => {
 		const data = await JSON.parse(localStorage.getItem(BOARD_ONE))
 		setSeq(data.seq)
 		setTitle(data.title)
 		setContent(data.content)
-	}, [])	
+	}, []);
 
 	return (
 		<div>

@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
-import { ACCESS_TOKEN, ADMIN_AUTH, IS_LOGIN, ROUTE_PATH } from '../../../constants';
+import { ACCESS_TOKEN, ADMIN_AUTH, IS_LOGIN, NEED_LOGIN, ROUTE_PATH } from '../../../constants';
 
 function Nav() {
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const [isLogin, setIsLogin] = useState(false);
     
@@ -13,18 +13,25 @@ function Nav() {
         localStorage.clear(ACCESS_TOKEN)
         localStorage.clear(ADMIN_AUTH)
         setIsLogin(false)
+        alert("로그아웃 완료")
         window.location.reload()
-    }
+    };
+
+    const navToLogin = () => {
+        navigate(ROUTE_PATH.login)
+    };
 
     useEffect(() => {
-        let loginState = localStorage.getItem(IS_LOGIN)
-        if (loginState === "null" || !loginState) {
-            setIsLogin(false)
-        } else {
+        const loginState = localStorage.getItem(IS_LOGIN)
+        const needLogin = localStorage.getItem(NEED_LOGIN)
+        if (loginState !== "null" && loginState) {
             setIsLogin(true)
-            if (window.location.href.slice(-5) === "login") {
+            if (window.location.href.slice(-5) === "login") { //로그인상태인데 로그인화면에 있으면 메인화면으로 이동
                 navigate(ROUTE_PATH.main)
             }
+        } if (needLogin !== "null" && needLogin) {
+            navToLogin();
+            localStorage.clear(NEED_LOGIN);
         }
       }, []);
 
@@ -34,7 +41,7 @@ function Nav() {
             {isLogin ?
                 <a onClick={logout}>Logout &nbsp;</a>
             :   
-                <a onClick={() => navigate(ROUTE_PATH.login)}>Login &nbsp;</a>
+                <a onClick={navToLogin}>Login &nbsp;</a>
             }
             <a onClick={() => navigate(ROUTE_PATH.signup)}>Signup</a>  &nbsp;
             <a onClick={() => navigate(ROUTE_PATH.boardAllView)}>Board</a>  &nbsp;

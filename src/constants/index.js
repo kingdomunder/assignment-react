@@ -3,9 +3,10 @@ export const ACCESS_TOKEN = "Token";
 export const BOARD_ALL = "BoardAll";
 export const BOARD_ONE = "BoardOne";
 export const ADMIN_AUTH = "ROLE_ADMIN";
-export const IS_LOGIN = "IsLogin"
+export const IS_LOGIN = "IsLogin";
+export const NEED_LOGIN = "NeedLogin";
 
-export const SERVER_URL = process.env.REACT_APP_SERVER_URL
+export const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 export const ROUTE_PATH = {
     "main" : "/",
@@ -17,7 +18,7 @@ export const ROUTE_PATH = {
     "BoardModify" : "/board/modify",
     "member" : "/member/search",
     "admin" : "/member/admin"
-}
+};
 
 export const API_PATH = {
     "check" : "api/auth/check",
@@ -36,7 +37,7 @@ export const API_PATH = {
     "adminModifyMember" : "api/member/",
     "adminAuthMember" : "api/member/auth",
     "adminDeleteMember" : "api/member/"
-}
+};
 
 export const DEFAULT = {
     "boardAllView" : {
@@ -47,8 +48,8 @@ export const DEFAULT = {
         "page" : "0",
         "size" : "10"
     }
-}
+};
 
 export const DATA = {
     "pasErrorData" : "자격 증명에 실패하였습니다." 
-}
+};

@@ -4,6 +4,7 @@ import { ADMIN_AUTH, ROUTE_PATH } from "../../constants"
 import { getMemberOne, getMemberAll } from '../../api/MemberQuery'
 import MemberOneContainer from './MemberSearchContainer/MemberOneContainer'
 import { AdminModifyMember, AdminAuthMember, AdminDeleteMember } from '../../api/MemberCommand'
+import styles from './MemberContainer.module.css'
 
 function MemberContainer() {
 
@@ -101,7 +102,7 @@ function MemberContainer() {
             <button onClick={handleMemberAll}>전체 검색</button>
         </div>
 		<hr />
-        <div>
+        <div className={styles.memberSearchContainer}>
             {memberAll && (
               <div>
 				<tr>
@@ -130,9 +131,9 @@ function MemberContainer() {
 									<button onClick={() => handleAdminModify(false)}>취소</button> 
 								</div>
 								:
-								<button onClick={() => handleAdminModify(member.email)}>정보수정</button> 
+								<button onClick={() => handleAdminModify(member.email)}>이름수정</button> 
 								}
-								<button onClick={() => handleAdminAuth(member.email)}>권한수정</button> 
+								<button onClick={() => handleAdminAuth(member.email)}>Admin권한부여</button> 
 								<button onClick={() => handleAdminDelete(member.email)}>삭제</button> 
 							</div>
 						  }
