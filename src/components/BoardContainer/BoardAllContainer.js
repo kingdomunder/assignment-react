@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { BOARD_ALL, IS_LOGIN, ROUTE_PATH } from "../../constants";
 import { getBoardAll, getBoardOne } from "../../api/BoardQuery";
-import { loginAlert } from "../../alert";
+import LoginAlert from "../Alert/LoginAlert";
 import Pagination from "../Pagination/Pagination";
 import styles from "./BoardAllContainer.module.css"
 
@@ -22,7 +22,7 @@ function BoardAllContainer() {
 	const handleBoardWrite = () => {
 		const isLogin = localStorage.getItem(IS_LOGIN);
 		if (isLogin === "null" || !isLogin) {
-			loginAlert();
+			LoginAlert();
 		} else {
 			navigate(ROUTE_PATH.boardWrite);
 		}
