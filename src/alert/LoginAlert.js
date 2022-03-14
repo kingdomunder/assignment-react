@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATH } from "../../constants";
 
-
-function LoginAlert(path) {
-    alert("로그인이 필요합니다");
+function LoginAlert() {
     const navigate = useNavigate();
-    if (path) {
-        navigate(path);
-    }
+    
+    alert("로그인이 필요합니다");
+    navigate(ROUTE_PATH.login);
 }
 
 export default LoginAlert

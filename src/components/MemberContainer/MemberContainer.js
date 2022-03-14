@@ -1,90 +1,93 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom"
-import { ADMIN_AUTH, ROUTE_PATH } from "../../constants"
+import { ADMIN_AUTH } from "../../constants"
 import { getMemberOne, getMemberAll } from '../../api/MemberQuery'
 import MemberOneContainer from './MemberSearchContainer/MemberOneContainer'
 import { AdminModifyMember, AdminAuthMember, AdminDeleteMember } from '../../api/MemberCommand'
 import styles from './MemberContainer.module.css'
 
 function MemberContainer() {
-
-  const navigate = useNavigate()
-
-  const [email, setEmail] = useState("")
-  const [memberAll, setMemberAll] = useState("")
-  const [memberOne, setMemberOne] = useState("")
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [newName, setNewName] = useState("")
-  const [isModifying, setIsModifying] = useState(false)
-  const [modifyingEmail, setModifyingEmail] = useState("")
+  const [email, setEmail] = useState("");
+  const [memberAll, setMemberAll] = useState("");
+  const [memberOne, setMemberOne] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [isModifying, setIsModifying] = useState(false);
+  const [modifyingEmail, setModifyingEmail] = useState("");
 
   const handleMemberAll = async() => {
     const data = await getMemberAll()
-    setMemberAll(data)
-    setMemberOne("")
-	setIsModifying(false)
-	setModifyingEmail("")
-	}
+    setMemberAll(data);
+    setMemberOne("");
+	handleClear();
+	};
 
   const handleMemberOne = async() => {
-	const data = await getMemberOne(email)
-	setMemberOne(data)
-	setMemberAll("")
-	setIsModifying(false)
-	setModifyingEmail("")
-    }
+	const data = await getMemberOne(email);
+	setMemberOne(data);
+	setMemberAll("");
+	handleClear();
+    };
   
   const handleAdminModify = (memberEmail) => {
 	  if (memberEmail) {
-		  setIsModifying(true)
-		  setModifyingEmail(memberEmail)
+		  setIsModifying(true);
+		  setModifyingEmail(memberEmail);
 	  } else {
-		  setIsModifying(false)
-		  setModifyingEmail("")
-	  }
-	  setNewName("")
-  }
+		handleClear();
+	  };
+	  setNewName("");
+  };
   
   const handleAdminModifyConnfirm = async(memberEmail) => {
   	const data = {
   		"name" : newName,
   		"email" : memberEmail
   	}
-  	const result = await AdminModifyMember(data)
+  	const result = await AdminModifyMember(data);
   	if (result) {
-		handleMemberAll()
-  	}
-  }
+		handleMemberAll();
+  	};
+  };
   
   const handleAdminAuth = async(memberEmail) => {
 	if (window.confirm("ADMIN 권한을 부여하시겠습니까?")) {
 		const data = {
 			"authority" : ADMIN_AUTH,
 			"email" : memberEmail
-		}
+		};
 		const result = await AdminAuthMember(data)
 		if (result) {
 			handleMemberAll()
-		}
-	}  
-  }
+		};
+	};
+  };
   
   const handleAdminDelete = async(memberEmail) => {
   	if (window.confirm("정말 삭제하시겠습니까?")) {
-  		const result = await AdminDeleteMember(memberEmail)
+  		const result = await AdminDeleteMember(memberEmail);
 		if (result === '사용자가 없습니다.') {
-			alert(result)
+			alert(result);
 		} else {
-			handleMemberAll()
-		}
-  	}
-  }
+			handleMemberAll();
+		};
+  	};
+  };
 
-  useEffect(() => {
-	const adminAuth = localStorage.getItem(ADMIN_AUTH)
+  const handleClear = () => {
+	setIsModifying(false);
+	setModifyingEmail("");
+  };
+
+  useEffect(async() => {
+	const memberData = await getMemberAll();
+	const adminAuth = sessionStorage.getItem(ADMIN_AUTH);
+	if (memberData) {
+		setMemberAll(memberData);
+	};
 	if (adminAuth === ADMIN_AUTH) {
 		setIsAdmin(true)
-	}
+	};
+
   }, []);
 
   return (
@@ -97,9 +100,6 @@ function MemberContainer() {
                    value={email}
                    onChange={e => setEmail(e.target.value)} />
         <button onClick={handleMemberOne}>검색</button>
-        </div>
-        <div>
-            <button onClick={handleMemberAll}>전체 검색</button>
         </div>
 		<hr />
         <div className={styles.memberSearchContainer}>
@@ -114,7 +114,7 @@ function MemberContainer() {
 				  <hr />
 				  {memberAll.map(member => (
 					  <div>
-						  <tr>
+						  <tr key={member.seq}>
 							  <td>{member.seq} /</td>
 							  <td>{member.email} /</td>
 							  <td>{member.name} /</td>

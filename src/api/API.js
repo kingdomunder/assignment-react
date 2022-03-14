@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ACCESS_TOKEN, SERVER_URL } from '../constants'
+import { ACCESS_TOKEN, SERVER_URL, ROUTE_PATH } from '../constants'
 import LoginAlert from '../components/Alert/LoginAlert';
 
 const API = axios.create({
@@ -7,7 +7,7 @@ const API = axios.create({
 })
 
 const getToken = () => {
-	const token = localStorage.getItem(ACCESS_TOKEN);
+	const token = sessionStorage.getItem(ACCESS_TOKEN);
 	if (token) {
 		return `Bearer ${token}`;
 	} else {
@@ -27,7 +27,7 @@ API.interceptors.response.use(response => {
 	return response
 }, error => {
     if (401 === error.response.status) {
-		LoginAlert();
+		LoginAlert(ROUTE_PATH.login);
     }
 });
 

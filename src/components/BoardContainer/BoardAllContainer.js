@@ -9,7 +9,7 @@ import styles from "./BoardAllContainer.module.css"
 function BoardAllContainer() {
 	const navigate = useNavigate();
 
-	const [boardData, setBoardData] = useState("");
+	const [boardData, setBoardData] = useState([]);
 	const [boardTotalPage, setBoardTotalPage] = useState("");
 
 	const handleBoardOne = async (seq) => {
@@ -20,23 +20,32 @@ function BoardAllContainer() {
 	};
 
 	const handleBoardWrite = () => {
-		const isLogin = localStorage.getItem(IS_LOGIN);
+		const isLogin = sessionStorage.getItem(IS_LOGIN);
 		if (isLogin === "null" || !isLogin) {
 			LoginAlert();
 		} else {
 			navigate(ROUTE_PATH.boardWrite);
 		}
 	}
-
 	
-	useEffect(async () => {
-		const storageData = JSON.parse(localStorage.getItem(BOARD_ALL));
-		if(storageData !== "null" && storageData) {
-			setBoardData(storageData);
-			setBoardTotalPage(storageData.totalSize);
-		}
-		const data = await getBoardAll();
+	const setBoardToStorage = (data) => {
 		setBoardData(data);
+		setBoardTotalPage(data.totalSize);
+	};
+
+	useEffect(async () => {
+		const storageData = JSON.parse(sessionStorage.getItem(BOARD_ALL));
+		if (storageData) {
+			setBoardToStorage(storageData)
+		};
+		const getBoardData = await getBoardAll();
+		if (getBoardData !== storageData) { // 업데이트 - 메인에서 불러온 게시판 정보와 새로 불러온 게시판 정보가 다르면, 새로운 게시판 정보로 갱신 
+			setBoardToStorage(getBoardData);
+		} 
+		if (!storageData && !getBoardData) {
+			alert("등록된 글이 없습니다");
+			navigate(ROUTE_PATH.main);
+		}
 	}, []);
 
 	return (
@@ -44,7 +53,8 @@ function BoardAllContainer() {
 			<div className={styles.boardAllContainer}>
 				<button onClick={handleBoardWrite}>Write</button>
 				<table>
-					{boardData.length != 0 && (
+					{boardData &&
+					boardData.length != 0 && 
 						<div>
 							<tr>
 								<th>SEQ</th>
@@ -54,7 +64,7 @@ function BoardAllContainer() {
 							</tr>
 							<hr />
 							{boardData.list.map(board => (
-								<tr onClick={() => handleBoardOne(board.seq)}>
+								<tr key={board.seq} onClick={() => handleBoardOne(board.seq)}>
 									<td>{board.seq}</td>
 									<td>{board.title}</td>
 									<td>{board.memberEmail}</td>
@@ -62,7 +72,7 @@ function BoardAllContainer() {
 								</tr>
 							))}
 						</div>
-					)}
+					}
 				</table>
 			</div>
 			<div>

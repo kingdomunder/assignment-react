@@ -39,7 +39,7 @@ function BoardModifyContainer() {
 	};
 
 	useEffect(async () => {
-		const data = await JSON.parse(localStorage.getItem(BOARD_ONE))
+		const data = await JSON.parse(sessionStorage.getItem(BOARD_ONE))
 		setSeq(data.seq)
 		setTitle(data.title)
 		setContent(data.content)

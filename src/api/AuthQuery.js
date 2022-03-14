@@ -2,7 +2,7 @@ import { ACCESS_TOKEN, IS_LOGIN, API_PATH, DATA } from "../constants";
 import API from "./API";
 
 export const authCheck = async() => {
-    const token = localStorage.getItem(ACCESS_TOKEN);
+    const token = sessionStorage.getItem(ACCESS_TOKEN);
     if(token) {
         await API.post(API_PATH.check, token)
         .then(res => {
@@ -16,7 +16,7 @@ export const authCheck = async() => {
     }
 }
 
-export const authLogin = async(navigate, loginData) => {
+export const authLogin = async(loginData) => {
     let result = false
     await API.post(API_PATH.login, loginData)
     .then(res => {
@@ -28,8 +28,8 @@ export const authLogin = async(navigate, loginData) => {
         }
         else {
             console.log(res.data);
-            localStorage.setItem(ACCESS_TOKEN, res.data.data.accessToken)
-            localStorage.setItem(IS_LOGIN, true)
+            sessionStorage.setItem(ACCESS_TOKEN, res.data.data.accessToken)
+            sessionStorage.setItem(IS_LOGIN, true)
             result = true         
         }
     })

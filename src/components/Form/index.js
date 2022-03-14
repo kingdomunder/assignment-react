@@ -1,6 +1,6 @@
 export const formCheckPassword = (data) => {
-    result = false;
-    if (data >= 8 && data <= 10) {
+    let result = false;
+    if (data.length >= 8 && data.length <= 10) {
         result = true;
     } 
 

@@ -76,8 +76,8 @@ function BoardOneContainer({ boardSeq }) {
 	};
 
 	useEffect(async() => {
-		const boardOneData = await JSON.parse(localStorage.getItem(BOARD_ONE));
-		const userEmailData = localStorage.getItem(USER_AUTH);
+		const boardOneData = await JSON.parse(sessionStorage.getItem(BOARD_ONE));
+		const userEmailData = sessionStorage.getItem(USER_AUTH);
 		setBoardOne(boardOneData);
 		setUserEmail(userEmailData);
 		if (boardOneData.memberEmail === userEmail) {
@@ -131,7 +131,7 @@ function BoardOneContainer({ boardSeq }) {
 								:
 								<div>
 									<ReplyContainer reply={reply} /> 
-									{((userEmail === reply.memberEmail) || (localStorage.getItem(ADMIN_AUTH) === ADMIN_AUTH)) &&
+									{((userEmail === reply.memberEmail) || (sessionStorage.getItem(ADMIN_AUTH) === ADMIN_AUTH)) &&
 									!reply.deleted &&
 										<div>
 											<button onClick={() => handleReplyModify(reply)}>수정</button>

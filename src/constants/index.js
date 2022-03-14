@@ -1,4 +1,4 @@
-//localStorage key값 은닉 
+//sessionStorage key값 은닉 
 export const ACCESS_TOKEN = "Token";
 export const BOARD_ALL = "BoardAll";
 export const BOARD_ONE = "BoardOne";
