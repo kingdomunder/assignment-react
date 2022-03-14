@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { BOARD_ALL, IS_LOGIN, ROUTE_PATH } from "../../constants";
@@ -15,12 +14,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 
 function BoardAllContainer() {
 	const [boardData, setBoardData] = useState([]);
@@ -83,41 +76,30 @@ function BoardAllContainer() {
 					<Typography component="h1" variant="h5">
 						Board
 					</Typography>
-					<Box
-						sx={{
-							display: 'flex',
-							flexDirection: 'row',
-							float: 'right'
-						}}
-					>
-						<div className={styles.BoardWriteButton}>
-							<BoardWriteButton />
-						</div>
-					</Box>
-					<Box component="form" noValidate sx={{ mt: 0, boxShadow: 2 }}>
-						{boardData &&
-							boardData.length != 0 &&
-							<Table size="small">
-								<TableHead>
-									<TableRow>
-										<TableCell>SEQ</TableCell>
-										<TableCell>TITLE</TableCell>
-										<TableCell>EMAIL</TableCell>
-										<TableCell>VIEW</TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
+					<Box component="form" noValidate sx={{ mt: 3 }}>
+						<table>
+							{boardData &&
+								boardData.length != 0 &&
+								<div>
+									<tr>
+										<th>SEQ</th>
+										<th>TITLE</th>
+										<th>EMAIL</th>
+										<th>VIEW</th>
+									</tr>
+									<hr />
 									{boardData.list.map(board => (
-										<TableRow key={board.seq} onClick={() => handleBoardOne(board.seq)}>
-											<TableCell>{board.seq}</TableCell>
-											<TableCell>{board.title}</TableCell>
-											<TableCell>{board.memberEmail}</TableCell>
-											<TableCell>{board.viewCount}</TableCell>
-										</TableRow>
+										<tr key={board.seq} onClick={() => handleBoardOne(board.seq)}>
+											<td>{board.seq}</td>
+											<td>{board.title}</td>
+											<td>{board.memberEmail}</td>
+											<td>{board.viewCount}</td>
+										</tr>
 									))}
-								</TableBody>
-							</Table>
-						}
+								</div>
+							}
+						</table>
+						<BoardWriteButton />
 					</Box>
 				</Box>
 			</Container>

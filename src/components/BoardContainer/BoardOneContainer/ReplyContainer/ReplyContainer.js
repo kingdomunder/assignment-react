@@ -1,31 +1,45 @@
+import * as React from 'react';
 import { useEffect, useState } from "react"
 import { getBoardOne } from "../../../../api/BoardQuery"
 import { replyDelete } from "../../../../api/BoardCommand"
+import Link from '@mui/material/Link';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
 
-function ReplyContainer(reply) {
+function ReplyContainer(replies) {
 
-    const [replyData, setReplyData] = useState("")
+    const [replyList, setReplyList] = useState([])
 
-    useEffect(() => {
-        setReplyData(reply.reply)
-      },[])
+    const preventDefault = (event) => {
+		event.preventDefault();
+	}
 
     return (
-		<div>
-            <table>
-                <tr>
-                    <td>작성자 : {replyData.memberEmail} &nbsp;</td>
-                    <td>마지막 작성일 : {replyData.updateDate} &nbsp;</td>
-                    <td>글번호 : {replyData.seq} &nbsp;</td>
-                </tr>
-                <hr />
-                <tr>
-                <td>
-                    <div><p>{replyData.content}</p></div>
-                </td>
-                </tr>
-            </table>
-		</div>
+        <React.Fragment>
+        <Table size="small">
+          <TableBody>
+            {replies.replies.map(reply => (
+                <div>
+                    {reply.content}
+                    <TableRow key={reply.seq}>
+                        <TableCell>{reply.memberEmail}</TableCell>
+                        <TableCell>{reply.updateDate}</TableCell>
+                    </TableRow>
+                    <br /> <br />
+                </div>
+            ))}
+          </TableBody>
+        </Table>
+      </React.Fragment>
     )
 }   
 

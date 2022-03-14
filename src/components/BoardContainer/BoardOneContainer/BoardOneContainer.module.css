@@ -8,8 +8,7 @@
 .boardContentContainer {
 	text-align: left;
 	border-style: groove;
-	width: 50%;
-	margin-left: 25%;
+	width: 500px;
 	height: 400px;
 }
 
@@ -18,4 +17,8 @@
 	border-style: groove;
 	width: 50%;
 	margin-left: 25%;
+}
+
+.writeButton {
+	width: 50px;
 }
