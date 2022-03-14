@@ -6,6 +6,7 @@ export const ADMIN_AUTH = "ROLE_ADMIN";
 export const USER_AUTH = "ROLE_USER";
 export const IS_LOGIN = "IsLogin";
 export const NEED_LOGIN = "NeedLogin";
+export const REMEMBER_EMAIL = "RememberEmail";
 
 export const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 

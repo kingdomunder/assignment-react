@@ -5,21 +5,12 @@ import { getBoardAll, getBoardOne } from "../../api/BoardQuery";
 import LoginAlert from "../Alert/LoginAlert";
 import Pagination from "../Pagination/Pagination";
 import styles from "./BoardAllContainer.module.css"
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function BoardAllContainer() {
+	const navigate = useNavigate();
+
 	const [boardData, setBoardData] = useState([]);
 	const [boardTotalPage, setBoardTotalPage] = useState("");
-	
-	const navigate = useNavigate();
-	const theme = createTheme();
 
 	const handleBoardOne = async (seq) => {
 		const result = await getBoardOne(seq);
@@ -56,27 +47,12 @@ function BoardAllContainer() {
 			navigate(ROUTE_PATH.main);
 		}
 	}, []);
-	
+
 	return (
-		<ThemeProvider theme={theme}>
-		  <Container component="main" maxWidth="xs">
-			<CssBaseline />
-			<Box
-			  sx={{
-				marginTop: 8,
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-			  }}
-			>
-			  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-				<LockOutlinedIcon />
-			  </Avatar>
-			  <Typography component="h1" variant="h5">
-			  	Board
-			  </Typography>
-			  <Box component="form" noValidate sx={{ mt: 3 }}>
-			  <table>
+		<div>
+			<div className={styles.boardAllContainer}>
+				<button onClick={handleBoardWrite}>Write</button>
+				<table>
 					{boardData &&
 					boardData.length != 0 && 
 						<div>
@@ -98,19 +74,14 @@ function BoardAllContainer() {
 						</div>
 					}
 				</table>
-				<Button
-				  fullWidth
-				  variant="contained"
-				  sx={{ mt: 5, mb: 15 }}
-				  onClick={handleBoardWrite}
-				>
-				  Write
-				</Button>
-			  </Box>
-			</Box>
-		  </Container>
-		</ThemeProvider>
-	  );
-	}
+			</div>
+			<div>
+				<Pagination 
+					
+					totlaPage={boardTotalPage}/>
+			</div>
+		</div>
+	);
+}
 
 export default BoardAllContainer;

@@ -4,14 +4,6 @@ import { getMemberOne, getMemberAll } from '../../api/MemberQuery'
 import MemberOneContainer from './MemberSearchContainer/MemberOneContainer'
 import { AdminModifyMember, AdminAuthMember, AdminDeleteMember } from '../../api/MemberCommand'
 import styles from './MemberContainer.module.css'
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function MemberContainer() {
   const [email, setEmail] = useState("");
@@ -21,8 +13,6 @@ function MemberContainer() {
   const [newName, setNewName] = useState("");
   const [isModifying, setIsModifying] = useState(false);
   const [modifyingEmail, setModifyingEmail] = useState("");
-
-  const theme = createTheme();
 
   const handleMemberAll = async() => {
     const data = await getMemberAll()
@@ -101,71 +91,64 @@ function MemberContainer() {
   }, []);
 
   return (
-	<ThemeProvider theme={theme}>
-	  <Container component="main" maxWidth="xs">
-		<CssBaseline />
-		<Box
-		  sx={{
-			marginTop: 8,
-			display: 'flex',
-			flexDirection: 'column',
-			alignItems: 'center',
-		  }}
-		>
-		  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-			<LockOutlinedIcon />
-		  </Avatar>
-		  <Typography component="h1" variant="h5">
-			  Member
-		  </Typography>
-		  <Box component="form" noValidate sx={{ mt: 3, mb: 15 }}>
-		  <table>
-				{memberAll &&
-				memberAll.length != 0 && 
-					<div>
-						<tr>
-							<th>SEQ</th>
-							<th>TITLE</th>
-							<th>EMAIL</th>
-							<th>VIEW</th>
-						</tr>
-						<hr />
-						{memberAll.map(member => (
+    <div> 
+        <div>
+            <label>
+            Email로 검색
+            </label>
+            <input type="text"
+                   value={email}
+                   onChange={e => setEmail(e.target.value)} />
+        <button onClick={handleMemberOne}>검색</button>
+        </div>
+		<hr />
+        <div className={styles.memberSearchContainer}>
+            {memberAll && (
+              <div>
+				<tr>
+					<th>SEQ /</th>
+					<th>EMAIL /</th>
+					<th>NAME /</th>
+					<th>AUTHORITY</th>
+			  	</tr>
+				  <hr />
+				  {memberAll.map(member => (
+					  <div>
+						  <tr key={member.seq}>
+							  <td>{member.seq} /</td>
+							  <td>{member.email} /</td>
+							  <td>{member.name} /</td>
+							  <td>{member.authority}</td>
+						  </tr>
+						  {isAdmin &&
 							<div>
-								<tr key={member.seq}>
-									<td>{member.seq}</td>
-									<td>{member.email}</td>
-									<td>{member.name}</td>
-									<td>{member.authority}</td>
-								</tr>
-								{isAdmin &&
-								<div>
-									{isModifying && modifyingEmail === member.email ?
-										<div>
-										<input type="text" 
-												value={newName} 
-												onChange={e => setNewName(e.target.value)}/> 
-										<Button onClick={() => handleAdminModifyConnfirm(member.email)}>Confirm</Button> 
-										<Button onClick={() => handleAdminModify(false)}>취소</Button> 
-									</div>
-									:
-									<Button onClick={() => handleAdminModify(member.email)}>이름수정</Button> 
-									}
-									<Button onClick={() => handleAdminAuth(member.email)}>Admin권한부여</Button> 
-									<Button onClick={() => handleAdminDelete(member.email)}>삭제</Button> 
-									<hr />
+								{isModifying && modifyingEmail === member.email ?
+									<div>
+									<input type="text" 
+											value={newName} 
+											onChange={e => setNewName(e.target.value)}/> 
+									<button onClick={() => handleAdminModifyConnfirm(member.email)}>Confirm</button> 
+									<button onClick={() => handleAdminModify(false)}>취소</button> 
 								</div>
+								:
+								<button onClick={() => handleAdminModify(member.email)}>이름수정</button> 
 								}
+								<button onClick={() => handleAdminAuth(member.email)}>Admin권한부여</button> 
+								<button onClick={() => handleAdminDelete(member.email)}>삭제</button> 
 							</div>
-						))}
-					</div>
-				}
-			</table>
-		  </Box>
-		</Box>
-	  </Container>
-	</ThemeProvider>
-  );
+						  }
+						  <hr />
+					  </div>
+					))}
+              </div>
+			)}
+            {
+                memberOne && 
+                <MemberOneContainer memberOneData={memberOne}/>
+            }
+        </div>
+    </div>
+  )
 }
 
 export default MemberContainer

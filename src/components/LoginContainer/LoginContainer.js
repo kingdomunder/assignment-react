@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authLogin } from '../../api/AuthQuery';
 import { getMemberOne } from '../../api/MemberQuery';
-import { ADMIN_AUTH, USER_AUTH, ROUTE_PATH } from '../../constants';
+import { ADMIN_AUTH, USER_AUTH, REMEMBER_EMAIL, ROUTE_PATH } from '../../constants';
 import { formCheckPassword } from '../Form';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -21,22 +21,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 function LoginContainer() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [remember, setRemember] = useState(false);
 
 	const navigate = useNavigate();
 	const theme = createTheme();
-
-	const Copyright = (name) => {
-		return (
-			<Typography variant="body2" color="text.secondary" align="center" {...name}>
-			{'Copyright © '}
-			<Link color="inherit" href="https://www.twolinecode.com/">
-			  {"TwoLineCode"}
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		  </Typography>
-		);
-	};
 
 	const handleLogin = async() => {
 		if (!formCheckPassword(password)) {  //API호출하기 전에, 비밀번호 길이를 미리 검사
@@ -54,10 +42,31 @@ function LoginContainer() {
 				if (auth === ADMIN_AUTH) {
 					sessionStorage.setItem(ADMIN_AUTH, auth)
 				};
+				if (remember) {
+					localStorage.setItem(REMEMBER_EMAIL, email);
+				}
 			};
 		}
 		window.location.reload();
 	}
+
+	const handleRememberCheck = () => {
+		if (remember) {
+			setRemember(false);
+			localStorage.removeItem(REMEMBER_EMAIL);
+			console.log(localStorage.getItem(REMEMBER_EMAIL));
+		} else {
+			setRemember(email);
+		}
+	}
+
+	useEffect(() => {
+		const rememberData = localStorage.getItem(REMEMBER_EMAIL);
+		if (rememberData) {
+			setEmail(rememberData);
+			setRemember(true);
+		}
+	  }, []);
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -87,6 +96,7 @@ function LoginContainer() {
 				  name="email"
 				  autoComplete="email"
 				  autoFocus
+				  value={email}
 				  onChange={e => setEmail(e.target.value)}
 				/>
 				<TextField
@@ -101,7 +111,7 @@ function LoginContainer() {
 				  onChange={e => setPassword(e.target.value)}
 				/>
 				<FormControlLabel
-				  control={<Checkbox value="remember" color="primary" />}
+				  control={<Checkbox value="remember" color="primary" onClick={handleRememberCheck} checked={remember} />}
 				  label="Remember me"
 				/>
 				<Button
@@ -126,7 +136,6 @@ function LoginContainer() {
 				</Grid>
 			  </Box>
 			</Box>
-			<Copyright sx={{ mt: 8, mb: 4 }} />
 		  </Container>
 		</ThemeProvider>
 	  );

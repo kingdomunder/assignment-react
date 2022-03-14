@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 import { IS_LOGIN, ROUTE_PATH } from '../../../constants';
 import LoginAlert from '../../Alert/LoginAlert';
 import styles from './Nav.module.css'
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import AppBar from './AppBar';
+import Toolbar from './ToolBar';
 
 function Nav() {
     const navigate = useNavigate();
@@ -38,9 +42,14 @@ function Nav() {
             navigate(ROUTE_PATH.member);
         } else {
             LoginAlert();
-            navigate(ROUTE_PATH.login);
         }
     };
+
+    const rightLink = {
+        fontSize: 16,
+        color: 'common.white',
+        ml: 3,
+      };
 
     useEffect(() => {
         const loginState = sessionStorage.getItem(IS_LOGIN);
@@ -52,23 +61,87 @@ function Nav() {
         }; 
       }, []);
 
-    return (
+      return (
         <div>
-            <a onClick={() => navigate(ROUTE_PATH.main)}>Main</a> &nbsp;
-            {isLogin ?
-                <a onClick={logout}>Logout &nbsp;</a>
-            :   
-                <a onClick={navToLogin}>LogIn &nbsp;</a>
-            }
-            <a onClick={() => navigate(ROUTE_PATH.signup)}>SignUp</a>  &nbsp;
-            <a onClick={() => navigate(ROUTE_PATH.boardAllView)}>Board</a>  &nbsp;
-            <a onClick={handleClickMember}>Member</a>  &nbsp;
-            <br />
-            <br />
-            <hr />
+          <AppBar position="fixed">
+            <Toolbar sx={{ justifyContent: 'space-between' }}>
+              <Box sx={{ flex: 1 }} />
+              <Link
+                variant="h6"
+                underline="none"
+                color="inherit"
+                href="/premium-themes/onepirate/"
+                sx={{ fontSize: 24 }}
+              >
+                {'TEST'}
+              </Link>
+              <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                <Link
+                  color="inherit"
+                  variant="h6"
+                  underline="none"
+                  href="#"
+                  sx={rightLink}
+                  onClick={() => navigate(ROUTE_PATH.main)}
+                >
+                  {'Main'}
+                </Link>
+                {isLogin ?
+                    <Link
+                    variant="h6"
+                    underline="none"
+                    href="#"
+                    sx={{ ...rightLink, color: 'secondary.main' }}
+                    onClick={logout}
+                    >
+                    {'LogOut'}
+                    </Link>
+                :
+                    <Link
+                    variant="h6"
+                    underline="none"
+                    href="#"
+                    sx={{ ...rightLink, color: 'secondary.main' }}
+                    onClick={navToLogin}
+                    >
+                    {'LogIn'}
+                    </Link>
+                }
+                {!isLogin &&
+                  <Link
+                    variant="h6"
+                    underline="none"
+                    href="#"
+                    sx={{ ...rightLink, color: 'secondary.main' }}
+                    onClick={() => navigate(ROUTE_PATH.signup)}
+                  >
+                    {'SignUp'}
+                  </Link>
+                }
+                <Link
+                  variant="h6"
+                  underline="none"
+                  href="#"
+                  sx={{ ...rightLink, color: 'secondary.main' }}
+                  onClick={() => navigate(ROUTE_PATH.boardAllView)}
+                >
+                  {'Board'}
+                </Link>
+                <Link
+                  variant="h6"
+                  underline="none"
+                  href="#"
+                  sx={{ ...rightLink, color: 'secondary.main' }}
+                  onClick={handleClickMember}
+                >
+                  {'Member'}
+                </Link>
+              </Box>
+            </Toolbar>
+          </AppBar>
+          <Toolbar />
         </div>
-
-    )
+      );
 }
 
 export default Nav

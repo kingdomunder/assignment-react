@@ -12,6 +12,7 @@ import BoardOnePage from './pages/BoardPage/BoardOnePage/BoardOnePage';
 import BoardWritePage from './pages/BoardPage/BoardOnePage/BoardWritePage';
 import BoardModifyPage from './pages/BoardPage/BoardOnePage/BoardModifyPage';
 import MemberPage from './pages/MemberPage/MemberPage';
+import Footer from './components/Footer/Footer';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
 				<Route exact path={ROUTE_PATH.BoardModify + "boardSeq"} element={<BoardModifyPage />} />
 				<Route exact path={ROUTE_PATH.member} element={<MemberPage />} />
 			</Routes>
+			<Footer />
 		</div>
 	);
 }
