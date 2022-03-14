@@ -1,19 +1,21 @@
 import { ROUTE_PATH, API_PATH } from "../constants";
 import API from "./API";
 
-export const authSignup = (navigate, signupData) => {
-    API.post(API_PATH.signup, signupData)
+export const authSignup = async (signupData) => {
+    let result = false;
+    await API.post(API_PATH.signup, signupData)
     .then(res => {
-        console.log(res.data)
-        const status = res.data.status
-        if (status === 200) {
-            alert("회원가입 성공")
-            navigate(ROUTE_PATH.login)
+        console.log(res.data);
+        if (res.data === "") {
+            alert("회원가입 성공");
+            result = true;
         } else {
-            alert("회원가입 실패")
-        }
+            alert("회원가입 실패");
+        };
     })
     .catch(err => {
-        console.log(err.message)
+        console.log(err.message);
     })
+
+    return result
 }

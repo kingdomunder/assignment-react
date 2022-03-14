@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { IS_LOGIN, ROUTE_PATH } from '../../../constants';
 import LoginAlert from '../../Alert/LoginAlert';
+import styles from './Nav.module.css'
 
 function Nav() {
     const navigate = useNavigate();
@@ -57,9 +58,9 @@ function Nav() {
             {isLogin ?
                 <a onClick={logout}>Logout &nbsp;</a>
             :   
-                <a onClick={navToLogin}>Login &nbsp;</a>
+                <a onClick={navToLogin}>LogIn &nbsp;</a>
             }
-            <a onClick={() => navigate(ROUTE_PATH.signup)}>Signup</a>  &nbsp;
+            <a onClick={() => navigate(ROUTE_PATH.signup)}>SignUp</a>  &nbsp;
             <a onClick={() => navigate(ROUTE_PATH.boardAllView)}>Board</a>  &nbsp;
             <a onClick={handleClickMember}>Member</a>  &nbsp;
             <br />
