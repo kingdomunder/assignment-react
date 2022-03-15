@@ -6,36 +6,21 @@ import { boardDelete, replyWrite, replyModify, replyDelete } from "../../../api/
 import { getBoardOne } from "../../../api/BoardQuery"
 import ReplyContainer from "./ReplyContainer/ReplyContainer"
 import styles from "./BoardOneContainer.module.css"
-import BoardWriteButton from '../../Button/BoardWriteButton';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import Orders from './ReplyContainer/ReplyContainer copy 2';
-
 function BoardOneContainer({ boardSeq }) {
-
-	const navigate = useNavigate();
-
 	const [boardOne, setBoardOne] = useState("");
+	const [repliesLength, setRepliesLength] = useState(0);
 	const [replyContent, setReplyContent] = useState("");
-	const [replyModifyContent, setReplyModifyContent] = useState("");
-	const [isReplyModifying, setIsReplyModifying] = useState(false);
 	const [isWriter, setIsWriter] = useState(false);
-	const [userEmail, setUserEmail] = useState("");
-	const [modifyingReply, setModifyingReply] = useState("");
-
+	const [userEmail, setUserEmail] = useState(111);
+	
+	const navigate = useNavigate();
 	const theme = createTheme();
 
 	const handleBoardDelete = async () => {
@@ -59,51 +44,19 @@ function BoardOneContainer({ boardSeq }) {
 		};
 	};
 
-	const handleReplyModify = (reply) => {
-		if (reply) {
-			setReplyModifyContent(reply.content);
-			setIsReplyModifying(true);
-			setModifyingReply(reply.seq);
-		} else {
-			setIsReplyModifying(false);
-			setModifyingReply("");
-		};
-	};
-
-	const handleReplyModifyConfirm = async () => {
-		const data = {
-			"content": replyModifyContent,
-			"seq": modifyingReply
-		}
-		const result = await replyModify(data);
-		if (result) {
-			handleReload();
-		};
-	};
-
-	const handleReplyDelete = async (seq) => {
-		if (window.confirm("정말 삭제하시겠습니까?")) {
-			const result = await replyDelete(seq);
-			if (result) {
-				handleReload();
-			};
-		};
-	};
-
 	const handleReload = async () => {
 		await getBoardOne(boardOne.seq);
 		window.location.reload();
 	};
-
-	const preventDefault = (event) => {
-		event.preventDefault();
-	}
 
 	useEffect(async () => {
 		const boardOneData = await JSON.parse(sessionStorage.getItem(BOARD_ONE));
 		const userEmailData = sessionStorage.getItem(USER_AUTH);
 		setBoardOne(boardOneData);
 		setUserEmail(userEmailData);
+		if (boardOneData.replies) {
+			setRepliesLength(boardOneData.replies.length);
+		};
 		if (boardOneData.memberEmail === userEmail) {
 			setIsWriter(true);
 		};
@@ -111,35 +64,77 @@ function BoardOneContainer({ boardSeq }) {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Container component="main" maxWidth="xs">
+			<Container component="main" maxWidth="md">
 				<CssBaseline />
 				<Box
-					sx={{
-						marginTop: 8,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-					}}
+					className={styles.boardOneBox}
 				>
-					<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-						<LockOutlinedIcon />
-					</Avatar>
-					<Typography component="h1" variant="h5">
-						{boardOne.title}
-					</Typography>
-					<Box component="form" noValidate sx={{ mt: 3 }}>
-						<div className={styles.boardContentContainer}>{boardOne.content}</div>
-						<div>
-							<div><h3>댓글</h3></div>
+					<div className={styles.boardTitleContainer}>
+						<Typography component="h1" variant="h5" sx={{ mb: 3 }}>
+							{boardOne.title}
+						</Typography>
+						<div className={styles.boardTitleSubContainer}>
 							<div>
-								{boardOne.replies &&
-									<div>
-										<ReplyContainer replies={boardOne.replies} />
-									</div>
-								}
+								<div>작성자 : <span className={styles.spanEmail}>{boardOne.memberEmail}</span></div>
+								<div>마지막 작성일 : <span className={styles.spanDate}>{boardOne.updateDate}</span></div>
+							</div>
+							<div className={styles.subRight}>
+								<div>조회수 : {boardOne.viewCount}</div>
+								<div>댓글 : {repliesLength}</div>
 							</div>
 						</div>
-					</Box>
+					</div>
+					<div style={{ width: "100%" }}><hr /></div>
+					<div className={styles.boardContentContainer}>{boardOne.content}</div>
+					<hr />
+					<div>
+						{isWriter &&
+							<div className={styles.buttonContainer}>
+								<Button
+									fullWidth
+									variant="contained"
+									sx={{ mt: 2, mb: 2 }}
+									onClick={() => navigate(ROUTE_PATH.BoardModify + boardOne.seq)}
+								>
+									Modify
+								</Button>
+								<Button
+									fullWidth
+									variant="contained"
+									sx={{ mt: 2, mb: 2 }}
+									color="warning"
+									onClick={() => handleBoardDelete(boardOne.seq)}
+								>
+									Delete
+								</Button>
+							</div>
+						}
+					</div>
+					<div className={styles.replyBox}>
+						<hr />
+						<h3>댓글 {repliesLength}</h3>
+						<div>
+							{boardOne.replies &&
+								<div>
+									<ReplyContainer 
+									replies={boardOne.replies} 
+									userEmail={sessionStorage.getItem(USER_AUTH)} 
+									isAdmin = {sessionStorage.getItem(ADMIN_AUTH)}/>
+								</div>
+							}
+							<div className={styles.replyWriteBox}>
+								<textarea className={styles.textarea}
+									onChange={e => setReplyContent(e.target.value)}
+									rows="5"
+									cols="100"
+									maxLength="500"
+									spellCheck="false"
+									value={replyContent} />
+							</div>
+							<button onClick={handleReplyWrite}>댓글달기</button>
+						</div>
+					</div>
+					
 				</Box>
 			</Container>
 

@@ -25,6 +25,7 @@ import TableRow from '@mui/material/TableRow';
 function BoardAllContainer() {
 	const [boardData, setBoardData] = useState([]);
 	const [boardTotalPage, setBoardTotalPage] = useState("");
+	const [repliesLength, setRepliesLength] = useState([]);
 
 	const navigate = useNavigate();
 	const theme = createTheme();
@@ -52,7 +53,7 @@ function BoardAllContainer() {
 
 	useEffect(async () => {
 		const storageData = JSON.parse(sessionStorage.getItem(BOARD_ALL));
-		if (storageData) {
+		if (storageData) {  //게시글 빠른 로딩을 위해 브라우저 스토리지에 있는 게시판정보 불러옴
 			setBoardToStorage(storageData)
 		};
 		const getBoardData = await getBoardAll();
@@ -104,6 +105,7 @@ function BoardAllContainer() {
 										<TableCell>TITLE</TableCell>
 										<TableCell>EMAIL</TableCell>
 										<TableCell>VIEW</TableCell>
+										<TableCell>REPLY</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -113,6 +115,7 @@ function BoardAllContainer() {
 											<TableCell>{board.title}</TableCell>
 											<TableCell>{board.memberEmail}</TableCell>
 											<TableCell>{board.viewCount}</TableCell>
+											<TableCell>{board.replies.length}</TableCell>
 										</TableRow>
 									))}
 								</TableBody>

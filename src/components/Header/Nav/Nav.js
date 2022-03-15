@@ -70,7 +70,6 @@ function Nav() {
 						variant="h6"
 						underline="none"
 						color="inherit"
-						href="/premium-themes/onepirate/"
 						sx={{ fontSize: 24 }}
 					>
 						{'TEST'}
@@ -80,7 +79,6 @@ function Nav() {
 							color="inherit"
 							variant="h6"
 							underline="none"
-							href="#"
 							sx={rightLink}
 							onClick={() => navigate(ROUTE_PATH.main)}
 						>
@@ -90,7 +88,6 @@ function Nav() {
 							<Link
 								variant="h6"
 								underline="none"
-								href="#"
 								sx={{ ...rightLink, color: 'secondary.main' }}
 								onClick={logout}
 							>
@@ -100,7 +97,6 @@ function Nav() {
 							<Link
 								variant="h6"
 								underline="none"
-								href="#"
 								sx={{ ...rightLink, color: 'secondary.main' }}
 								onClick={navToLogin}
 							>
@@ -111,7 +107,6 @@ function Nav() {
 							<Link
 								variant="h6"
 								underline="none"
-								href="#"
 								sx={{ ...rightLink, color: 'secondary.main' }}
 								onClick={() => navigate(ROUTE_PATH.signup)}
 							>
@@ -121,7 +116,6 @@ function Nav() {
 						<Link
 							variant="h6"
 							underline="none"
-							href="#"
 							sx={{ ...rightLink, color: 'secondary.main' }}
 							onClick={() => navigate(ROUTE_PATH.boardAllView)}
 						>
@@ -130,7 +124,6 @@ function Nav() {
 						<Link
 							variant="h6"
 							underline="none"
-							href="#"
 							sx={{ ...rightLink, color: 'secondary.main' }}
 							onClick={handleClickMember}
 						>

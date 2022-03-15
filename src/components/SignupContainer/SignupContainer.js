@@ -164,7 +164,7 @@ function SignupContainer() {
 				>
 				  Sign Up
 				</Button>
-				<Grid container justifyContent="flex-end">
+				<Grid sx={{ mb: 15 }} container justifyContent="flex-end">
 				  <Grid item>
 					<Link href="#" variant="body2" onClick={() => navigate(ROUTE_PATH.login)}>
 					  Already have an account? - LogIn

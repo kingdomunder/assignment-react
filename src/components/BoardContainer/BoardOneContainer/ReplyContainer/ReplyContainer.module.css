@@ -1,0 +1,21 @@
+.replyBox {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.spanEmail {
+    font-style:italic;
+}
+
+.spanDate {
+    color: gray;
+}
+
+.textarea {
+    width: 100%;
+}
+
+.buttoneBox {
+    text-align: right;
+}
+

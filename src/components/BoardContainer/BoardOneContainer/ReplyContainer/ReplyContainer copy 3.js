@@ -8,8 +8,8 @@ import Button from '@mui/material/Button';
 
 function ReplyContainer( {replies, userEmail, isAdmin} ) {
 	const [isReplyModifying, setIsReplyModifying] = useState(false);
-	const [replyModifiedSeq, setReplyModifiedSeq] = useState("");
 	const [replyModifiedContent, setReplyModifiedContent] = useState("");
+	const [replyModifiedSeq, setReplyModifiedSeq] = useState("");
 
 	let { boardSeq } = useParams();
 
@@ -35,8 +35,8 @@ function ReplyContainer( {replies, userEmail, isAdmin} ) {
 
 	const handleReplyModifyConfirm = async () => {
 		const data = {
-			"seq": replyModifiedSeq,
-			"content": replyModifiedContent
+			"content": replyModifiedContent,
+			"seq": replyModifiedSeq
 		}
 		const result = await replyModify(data);
 		if (result) {
@@ -54,35 +54,27 @@ function ReplyContainer( {replies, userEmail, isAdmin} ) {
 			{replies.map(reply => (
 				<div key={reply.seq}>
 					<hr />
-					{isReplyModifying && (replyModifiedSeq === reply.seq) ? 
+					{isReplyModifying ? 
+					<div>
+						{(replyModifiedSeq === reply.seq)  &&
 						<div>
 							<textarea 
-								className={styles.textarea}
 								style={{resize: "none"}}
 								onChange={e => setReplyModifiedContent(e.target.value)}
 								rows="5" 
 								cols="100" 
 								maxLength="500" 
 								spellCheck="false" 
-								value={replyModifiedContent} />
-							<div className={styles.buttoneBox}>
-								<Button
-									variant="contained"
-									onClick={() => handleReplyModifyConfirm()}
-								>
-									수정
-								</Button>
-								<Button
-									variant="contained"
-									color="warning"
-									onClick={() => handleReplyModify()}
-								>
-									취소
-								</Button>
-								<br />
-								<br />
-							</div>
+								value={setReplyModifiedContent} />
+							<Button
+								variant="contained"
+								onClick={() => handleReplyModify()}
+							>
+								Cancel
+							</Button>
 						</div>
+						}
+					</div>
 					:
 					<div className={styles.replyBox}>
 						<div>
@@ -98,14 +90,14 @@ function ReplyContainer( {replies, userEmail, isAdmin} ) {
 										variant="contained"
 										onClick={() => handleReplyModify(reply)}
 									>
-										댓글수정
+										Modify
 									</Button>
 									<Button
 										variant="contained"
-										color="error"
+										color="warning"
 										onClick={() => handleReplyDelete(reply.seq)}
 									>
-										댓글삭제
+										Delete
 									</Button>
 								</div>
 							}

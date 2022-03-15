@@ -1,24 +1,57 @@
-.boardTitleContainer {
-	text-align: left;
+.boardOneBox {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	border-style: groove;
-	width: 50%;
-	margin-left: 25%;
+	padding: 3%;
+	margin-top: 80px;
+	margin-bottom: 100px;
+	text-align: left;
+}
+
+.boardTitleContainer {
+	width: 100%;
+}
+
+.spanEmail {
+    font-style:italic;
+}
+
+.spanDate {
+    font-style:italic;
+}
+
+.boardTitleSubContainer {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.subLeft {
+}
+
+.subRight {
+	text-align: right;
 }
 
 .boardContentContainer {
-	text-align: left;
-	border-style: groove;
-	width: 500px;
+	width: 100%;
 	height: 400px;
+	margin-top: 10px;
 }
 
-.replyContainer {
-	text-align: left;
-	border-style: groove;
-	width: 50%;
-	margin-left: 25%;
+.buttonContainer {
+	display: flex;
+	flex-direction: row;
+	font-size: larger;
 }
 
-.writeButton {
-	width: 50px;
+.replyBox {
+	width: 100%;
+}
+
+.textarea {
+	width: 100%;
+	resize: none;
+	margin-top: 20px;
 }
