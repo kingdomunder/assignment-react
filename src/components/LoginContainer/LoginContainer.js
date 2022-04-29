@@ -1,3 +1,4 @@
+import { ThreeDots } from 'react-loader-spinner'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authLogin } from '../../api/AuthQuery';
@@ -22,20 +23,31 @@ function LoginContainer() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [remember, setRemember] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();
 	const theme = createTheme();
+
+	useEffect(() => {
+		const rememberData = localStorage.getItem(REMEMBER_EMAIL);
+		if (rememberData) {
+			setEmail(rememberData);
+			setRemember(true);
+		}
+	  }, []);
 
 	const handleLogin = async() => {
 		if (!formCheckPassword(password)) {  //API호출하기 전에, 비밀번호 길이를 미리 검사
 			alert("입력정보를 확인해주세요") 
 		} else {
+			setIsLoading(true)
 			const data = {
 				email,
 				password
 			};
 			const result = await authLogin(data);
 			if (result) {
+				setIsLoading(false)
 				sessionStorage.setItem(USER_AUTH, email);
 				const memberData = await getMemberOne(email);
 				const auth = memberData.authority;
@@ -47,7 +59,7 @@ function LoginContainer() {
 				}
 			};
 		}
-		window.location.reload();
+		navigate(ROUTE_PATH.main)
 	}
 
 	const handleRememberCheck = () => {
@@ -59,14 +71,6 @@ function LoginContainer() {
 			setRemember(email);
 		}
 	}
-
-	useEffect(() => {
-		const rememberData = localStorage.getItem(REMEMBER_EMAIL);
-		if (rememberData) {
-			setEmail(rememberData);
-			setRemember(true);
-		}
-	  }, []);
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -86,6 +90,8 @@ function LoginContainer() {
 			  <Typography component="h1" variant="h5">
 				Log in
 			  </Typography>
+				{isLoading ? <ThreeDots />
+				:
 			  <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
 				<TextField
 				  margin="normal"
@@ -135,6 +141,7 @@ function LoginContainer() {
 				  </Grid>
 				</Grid>
 			  </Box>
+				}
 			</Box>
 		  </Container>
 		</ThemeProvider>

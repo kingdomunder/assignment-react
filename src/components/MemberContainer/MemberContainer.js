@@ -1,22 +1,21 @@
+import { ThreeDots } from 'react-loader-spinner'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import CssBaseline from '@mui/material/CssBaseline'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
+import { AdminAuthMember, AdminDeleteMember, AdminModifyMember } from '../../api/MemberCommand'
+import { getMemberAll, getMemberOne } from '../../api/MemberQuery'
 import { ADMIN_AUTH } from "../../constants"
-import { getMemberOne, getMemberAll } from '../../api/MemberQuery'
-import MemberOneContainer from './MemberSearchContainer/MemberOneContainer'
-import { AdminModifyMember, AdminAuthMember, AdminDeleteMember } from '../../api/MemberCommand'
-import styles from './MemberContainer.module.css'
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 
 function MemberContainer() {
 	const [email, setEmail] = useState("");
@@ -26,8 +25,21 @@ function MemberContainer() {
 	const [newName, setNewName] = useState("");
 	const [isModifying, setIsModifying] = useState(false);
 	const [modifyingEmail, setModifyingEmail] = useState("");
+	const [isLoading, setIsLoading] = useState(true);
 
 	const theme = createTheme();
+
+	useEffect(async () => {
+		const memberData = await getMemberAll();
+		const adminAuth = sessionStorage.getItem(ADMIN_AUTH);
+		if (memberData) {
+			setMemberAll(memberData);
+		};
+		if (adminAuth === ADMIN_AUTH) {
+			setIsAdmin(true)
+		};
+		setIsLoading(false)
+	}, []);
 
 	const handleMemberAll = async () => {
 		const data = await getMemberAll()
@@ -93,18 +105,6 @@ function MemberContainer() {
 		setModifyingEmail("");
 	};
 
-	useEffect(async () => {
-		const memberData = await getMemberAll();
-		const adminAuth = sessionStorage.getItem(ADMIN_AUTH);
-		if (memberData) {
-			setMemberAll(memberData);
-		};
-		if (adminAuth === ADMIN_AUTH) {
-			setIsAdmin(true)
-		};
-
-	}, []);
-
 	return (
 		<ThemeProvider theme={theme}>
 			<Container component="main" maxWidth="xs">
@@ -123,6 +123,7 @@ function MemberContainer() {
 					<Typography component="h1" variant="h5">
 						Member
 					</Typography>
+					{isLoading && <ThreeDots />}
 					<Box component="form" noValidate sx={{ mt: 3, mb: 15 }}>
 						{memberAll &&
 							memberAll.length != 0 &&

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import auth from "./auth_reducer";
+import auth from "./persist_configg
 
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
